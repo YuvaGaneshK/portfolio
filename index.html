@@ -1549,9 +1549,15 @@
       const themeToggle = document.getElementById("themeToggle");
       const toggleIcon = document.getElementById("toggleIcon");
       const savedTheme = localStorage.getItem("theme");
-      if (savedTheme === "light") {
+      // Default to LIGHT theme unless user explicitly chose dark before.
+      const theme = savedTheme === "dark" ? "dark" : "light";
+      const isLight = theme === "light";
+      if (isLight) {
         document.body.classList.add("light");
         toggleIcon.textContent = "☀️";
+      } else {
+        document.body.classList.remove("light");
+        toggleIcon.textContent = "🌙";
       }
       themeToggle.addEventListener("click", () => {
         document.body.classList.toggle("light");
