@@ -107,6 +107,18 @@
         cursor: auto;
       }
 
+      /*
+        Mild protection only: discourages right-click / drag-save on images.
+        Anyone can still use DevTools, Network tab, or view source — that is
+        impossible to prevent for a normal public website.
+      */
+      img {
+        -webkit-user-drag: none;
+        user-select: none;
+        -webkit-user-select: none;
+        -webkit-touch-callout: none;
+      }
+
       /* Scrollbar */
       ::-webkit-scrollbar {
         width: 4px;
@@ -1656,6 +1668,43 @@
           mobileMenuBtn.textContent = "☰";
         });
       });
+
+      // --- Deterrents only (not real security; easy to bypass) ---
+      document.addEventListener("contextmenu", (e) => e.preventDefault());
+      document.addEventListener("dragstart", (e) => {
+        if (e.target && e.target.tagName === "IMG") e.preventDefault();
+      });
+      document.addEventListener("selectstart", (e) => {
+        if (e.target && e.target.tagName === "IMG") e.preventDefault();
+      });
+      document.addEventListener(
+        "keydown",
+        (e) => {
+          const k = e.key;
+          const upper = k.length === 1 ? k.toUpperCase() : k;
+          if (upper === "F12") {
+            e.preventDefault();
+            return;
+          }
+          if (e.ctrlKey && e.shiftKey && ["I", "J", "C"].includes(upper)) {
+            e.preventDefault();
+            return;
+          }
+          if (e.ctrlKey && !e.shiftKey && k.toLowerCase() === "u") {
+            e.preventDefault();
+            return;
+          }
+          if (e.ctrlKey && !e.shiftKey && k.toLowerCase() === "s") {
+            e.preventDefault();
+            return;
+          }
+          if (e.metaKey && e.altKey && k.toLowerCase() === "i") {
+            e.preventDefault();
+            return;
+          }
+        },
+        true
+      );
 
       // Scroll reveal
       const observer = new IntersectionObserver(
