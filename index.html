@@ -171,6 +171,24 @@
       .nav-links a:hover::after {
         width: 100%;
       }
+      .mobile-menu-btn {
+        display: none;
+        background: var(--card);
+        border: 1px solid var(--border);
+        color: var(--text);
+        border-radius: 8px;
+        width: 38px;
+        height: 38px;
+        cursor: pointer;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+        line-height: 1;
+      }
+      .mobile-menu-btn:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
 
       /* HERO */
       .hero {
@@ -939,9 +957,28 @@
       @media (max-width: 768px) {
         nav {
           padding: 1.2rem 1.5rem;
+          position: fixed;
         }
         .nav-links {
           display: none;
+          position: absolute;
+          top: calc(100% + 10px);
+          left: 1.5rem;
+          right: 1.5rem;
+          background: var(--card);
+          border: 1px solid var(--border);
+          border-radius: 10px;
+          padding: 0.8rem 1rem;
+          flex-direction: column;
+          margin-left: 30%;
+          gap: 0.8rem;
+          z-index: 120;
+        }
+        .nav-links.mobile-open {
+          display: flex;
+        }
+        .mobile-menu-btn {
+          display: inline-flex;
         }
         .hero {
           padding: 6rem 1.5rem 3rem;
@@ -997,6 +1034,14 @@
           <a href="#contact">Contact</a>
         </li>
       </ul>
+      <button
+        class="mobile-menu-btn"
+        id="mobileMenuBtn"
+        aria-label="Open navigation menu"
+        aria-expanded="false"
+      >
+        ☰
+      </button>
       <button class="theme-toggle" id="themeToggle" title="Toggle theme">
         <span class="toggle-icon" id="toggleIcon">🌙</span>
         <div class="toggle-track"><div class="toggle-thumb"></div></div>
@@ -1118,7 +1163,7 @@
             <div class="timeline-dot"></div>
             <div class="timeline-header">
               <div class="timeline-role">Associate Full Stack Developer</div>
-              <div class="timeline-period">Dec 2023 — May 2025</div>
+              <div class="timeline-period">Dec 2023 — Feb 2026</div>
             </div>
             <div class="timeline-company">
               Consortia 22 · Chennai, Tamil Nadu
@@ -1153,7 +1198,7 @@
             <div class="timeline-dot"></div>
             <div class="timeline-header">
               <div class="timeline-role">Freelance Full Stack Developer</div>
-              <div class="timeline-period">Feb 2025 — Present</div>
+              <div class="timeline-period">Feb 2025 — Oct 2025</div>
             </div>
             <div class="timeline-company">Self-employed · Remote</div>
             <ul class="timeline-list">
@@ -1430,7 +1475,7 @@
       <div class="about-grid">
         <div class="about-text reveal">
           <p>
-            I'm a Full Stack Developer from Vellore, Tamil Nadu, with 1.5 years
+            I'm a Full Stack Developer from Vellore, Tamil Nadu, with 2.2 years
             of hands-on experience building and maintaining production-grade web
             applications. My journey into tech is unconventional — I hold a
             Bachelor's degree in Defence &amp; Strategic Studies — which gives
@@ -1570,6 +1615,22 @@
         const isLight = document.body.classList.contains("light");
         toggleIcon.textContent = isLight ? "☀️" : "🌙";
         localStorage.setItem("theme", isLight ? "light" : "dark");
+      });
+
+      // Mobile navigation menu
+      const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+      const navLinks = document.querySelector(".nav-links");
+      mobileMenuBtn.addEventListener("click", () => {
+        const isOpen = navLinks.classList.toggle("mobile-open");
+        mobileMenuBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+        mobileMenuBtn.textContent = isOpen ? "✕" : "☰";
+      });
+      document.querySelectorAll(".nav-links a").forEach((link) => {
+        link.addEventListener("click", () => {
+          navLinks.classList.remove("mobile-open");
+          mobileMenuBtn.setAttribute("aria-expanded", "false");
+          mobileMenuBtn.textContent = "☰";
+        });
       });
 
       // Scroll reveal
